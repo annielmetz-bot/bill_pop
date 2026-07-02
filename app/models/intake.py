@@ -52,6 +52,10 @@ class IntakeRawRecord(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         nullable=False,
         default=NormalizationStatus.PENDING,
     )
+    # Why a record was flagged: list of missing-field descriptors from the
+    # completeness check. Empty when normalized cleanly. This is what keeps
+    # Phase 3B gaps visible instead of silently under-coded.
+    flags: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
     # Set once normalized into a PhaseRecord.
     phase_record_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("phase_record.id", ondelete="SET NULL"), nullable=True, index=True

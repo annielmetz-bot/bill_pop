@@ -14,6 +14,10 @@ extend-exclude = ["alembic/versions"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency-injection idiom relies on calls in argument defaults.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.Body"]
+
 [tool.pytest.ini_options]
 addopts = "-ra"
 testpaths = ["tests"]

@@ -1,19 +1,22 @@
 """FastAPI application entrypoint.
 
-Month 1 is data model & schema. The app exposes only a health check for now;
-intake, eligibility, coding, claims, remittance, posting, and reporting
-routers arrive in later months per the roadmap.
+Month 2 adds the Data Intake Layer and Eligibility (270/271). Coding, claims,
+remittance, posting, and reporting routers arrive in later months per the
+roadmap.
 """
 
 from fastapi import FastAPI
 
 from app.config import settings
+from app.routers import intake
 
 app = FastAPI(
     title="Bill Pop",
     description="Billing automation agent for psychedelic-assisted therapy clinics",
-    version="0.1.0",
+    version="0.2.0",
 )
+
+app.include_router(intake.router)
 
 
 @app.get("/health", tags=["ops"])

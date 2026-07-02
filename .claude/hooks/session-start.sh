@@ -16,10 +16,10 @@ if [ ! -d .venv ]; then
 fi
 
 # Idempotent: pip install is a no-op when everything is already satisfied.
+# requirements-dev.txt pulls in runtime deps plus the linter, test runner, and
+# httpx (needed by fastapi.testclient.TestClient).
 ./.venv/bin/pip install --quiet --upgrade pip
-./.venv/bin/pip install --quiet -r requirements.txt
-# Dev tooling (linter + test runner) configured in pyproject.toml.
-./.venv/bin/pip install --quiet ruff pytest
+./.venv/bin/pip install --quiet -r requirements-dev.txt
 
 # Activate the venv for the rest of the session so `python`, `pytest`, `ruff`,
 # and `alembic` resolve to the project environment.
