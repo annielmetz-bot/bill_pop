@@ -65,3 +65,13 @@ class NormalizationStatus(enum.StrEnum):
     PENDING = "pending"
     NORMALIZED = "normalized"
     FLAGGED_INCOMPLETE = "flagged_incomplete"
+
+
+class EligibilityStatus(enum.StrEnum):
+    """Outcome of a 270/271 eligibility check (271 EB01-derived)."""
+
+    ACTIVE = "active"          # coverage active
+    INACTIVE = "inactive"      # coverage inactive/terminated
+    NEEDS_INFO = "needs_info"  # payer needs more info to respond
+    NOT_FOUND = "not_found"    # subscriber/patient not found (271 AAA)
+    ERROR = "error"            # transport / gateway error

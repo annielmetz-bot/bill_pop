@@ -19,6 +19,7 @@ from app.models.coding import (
     Payer,
     PayerCodeRule,
 )
+from app.models.eligibility import EligibilityCheck
 from app.models.intake import IntakeBatch, IntakeRawRecord
 
 __all__ = [
@@ -38,4 +39,6 @@ __all__ = [
     # intake
     "IntakeBatch",
     "IntakeRawRecord",
+    # eligibility
+    "EligibilityCheck",
 ]

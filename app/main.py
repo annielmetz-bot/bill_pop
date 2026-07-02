@@ -8,7 +8,7 @@ roadmap.
 from fastapi import FastAPI
 
 from app.config import settings
-from app.routers import intake
+from app.routers import eligibility, intake
 
 app = FastAPI(
     title="Bill Pop",
@@ -17,6 +17,7 @@ app = FastAPI(
 )
 
 app.include_router(intake.router)
+app.include_router(eligibility.router)
 
 
 @app.get("/health", tags=["ops"])
