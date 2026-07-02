@@ -8,7 +8,7 @@ grow to other PAT modalities without a schema rebuild).
 import enum
 
 
-class SourceSystem(str, enum.Enum):
+class SourceSystem(enum.StrEnum):
     """Clinic system of record a record originated from."""
 
     HOMECOMING = "homecoming"
@@ -16,7 +16,7 @@ class SourceSystem(str, enum.Enum):
     MANUAL = "manual"
 
 
-class BaaStatus(str, enum.Enum):
+class BaaStatus(enum.StrEnum):
     """Business Associate Agreement status for a clinic."""
 
     PENDING = "pending"
@@ -24,13 +24,13 @@ class BaaStatus(str, enum.Enum):
     EXPIRED = "expired"
 
 
-class Modality(str, enum.Enum):
+class Modality(enum.StrEnum):
     """PAT modality. Psilocybin (NM) is the first; built to extend."""
 
     PSILOCYBIN = "psilocybin"
 
 
-class Phase(str, enum.Enum):
+class Phase(enum.StrEnum):
     """The four-phase model, with Phase 3 split into 3A/3B."""
 
     SCREENING = "screening"          # Phase 1
@@ -40,7 +40,7 @@ class Phase(str, enum.Enum):
     INTEGRATION = "integration"      # Phase 4
 
 
-class PhaseStatus(str, enum.Enum):
+class PhaseStatus(enum.StrEnum):
     """Coding-readiness of a phase record."""
 
     DOCUMENTED = "documented"
@@ -48,18 +48,18 @@ class PhaseStatus(str, enum.Enum):
     READY_TO_CODE = "ready_to_code"
 
 
-class PayerType(str, enum.Enum):
+class PayerType(enum.StrEnum):
     MEDICAID = "medicaid"
     COMMERCIAL = "commercial"
 
 
-class ImportType(str, enum.Enum):
+class ImportType(enum.StrEnum):
     CSV = "csv"
     PDF = "pdf"
     MANUAL = "manual"
 
 
-class NormalizationStatus(str, enum.Enum):
+class NormalizationStatus(enum.StrEnum):
     """Lifecycle of a raw intake record on its way to a PhaseRecord."""
 
     PENDING = "pending"
