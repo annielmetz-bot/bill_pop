@@ -61,6 +61,9 @@
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
   .brand { display: flex; align-items: center; gap: 12px; }
   .brand-name { font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .nav { display: flex; gap: 26px; }
+  .nav a { color: var(--muted); text-decoration: none; font-size: 14.5px; }
+  .nav a:hover { color: var(--ink); }
   .mark { display: block; flex: none; }
   .status-pill {
     font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
@@ -146,6 +149,19 @@
   .tl h3 { font-family: var(--sans); font-size: 14.5px; font-weight: 700; margin-top: 8px; }
   .tl p { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
+  /* ---- getting started steps ---- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: step; }
+  .step { position: relative; padding-top: 26px; border-top: 2px solid var(--pine); }
+  .step-num { position: absolute; top: -15px; left: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--pine); color: #fff; font-family: var(--mono); font-size: 13px; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+  .step h3 { font-family: var(--sans); font-size: 18px; font-weight: 700; }
+  .step p { margin-top: 8px; font-size: 15px; color: #33433b; }
+  .reassure { margin-top: 34px; padding: 20px 24px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 6px; font-size: 15.5px; color: #2a3a32; max-width: 78ch; }
+
+  /* ---- faq ---- */
+  .faq { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 44px; }
+  .qa h3 { font-family: var(--sans); font-size: 16.5px; font-weight: 700; }
+  .qa p { margin-top: 8px; font-size: 15px; color: #33433b; max-width: 46ch; }
+
   /* ---- footer ---- */
   .foot { background: var(--pine); color: #E7EFE9; border-top: none; }
   .foot h2 { color: #fff; font-size: clamp(26px, 4vw, 38px); max-width: 20ch; }
@@ -173,6 +189,9 @@
     .principles { grid-template-columns: 1fr; }
     .station { grid-template-columns: 32px 1fr; }
     .station .pill { grid-column: 2; justify-self: start; margin-top: 6px; }
+    .steps { grid-template-columns: 1fr; gap: 28px; }
+    .faq { grid-template-columns: 1fr; gap: 24px; }
+    .nav { display: none; }
   }
   @media (max-width: 520px) {
     .phases { grid-template-columns: 1fr; }
@@ -192,6 +211,12 @@
     </svg>
     <span class="brand-name">Bill&nbsp;Pop</span>
   </div>
+  <nav class="nav">
+    <a href="#how">How it works</a>
+    <a href="#clinics">For clinics</a>
+    <a href="#faq">FAQ</a>
+    <a href="#pilot">Contact</a>
+  </nav>
   <span class="status-pill">Month 2 of 6 · In build</span>
 </header>
 
@@ -368,6 +393,69 @@
         <span class="k">Privacy first</span>
         <h3>Audit trail on every touch.</h3>
         <p>Patient data is sensitive health information. Everything is logged, nothing sensitive sits in the open, and a clinic isn't switched on until the privacy agreement is signed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--band" id="clinics">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">For clinics</p>
+      <h2>Getting started is three steps.</h2>
+      <p>No new software to learn, no billing department to hire. Bill Pop sits behind the tools you already run.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Sign a BAA</h3>
+        <p>A one-time privacy agreement that lets us handle patient data securely. Standard, and required before anything goes live.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Send your records</h3>
+        <p>Type visits into a simple portal, or export a spreadsheet from Homecoming or Althea. Keep using your current system exactly as you do now.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>We bill, you get paid</h3>
+        <p>Bill Pop codes each visit, checks coverage, submits claims, and chases denials — and hands you clear revenue reports.</p>
+      </div>
+    </div>
+    <p class="reassure reveal">You don't switch systems, hire a biller, or learn insurance codes. Incomplete records come back to you flagged for a quick fix — never billed wrong on your behalf.</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Questions</p>
+      <h2>Common questions.</h2>
+    </div>
+    <div class="faq reveal">
+      <div class="qa">
+        <h3>Do we have to switch off Homecoming or Althea?</h3>
+        <p>No. Bill Pop sits behind them — you keep your current system, and we handle only the insurance billing it can't do.</p>
+      </div>
+      <div class="qa">
+        <h3>What if you can't connect to our platform directly?</h3>
+        <p>We start with manual entry or a spreadsheet export, so nothing depends on a vendor integration. If direct access opens up later, only that one connector changes.</p>
+      </div>
+      <div class="qa">
+        <h3>Which insurers do you work with?</h3>
+        <p>We reach payers through a clearinghouse, starting with New Mexico Medicaid for the psilocybin program. The system is built to add payers as coverage expands.</p>
+      </div>
+      <div class="qa">
+        <h3>Is our patients' data safe?</h3>
+        <p>Yes. It's treated as protected health information — encrypted, audit-logged on every touch, and covered by a signed BAA before anything goes live.</p>
+      </div>
+      <div class="qa">
+        <h3>What does it cost?</h3>
+        <p>We're finalizing pilot terms with our first clinics. Reach out and we'll walk you through what makes sense for your practice.</p>
+      </div>
+      <div class="qa">
+        <h3>When can we start?</h3>
+        <p>The pilot goes live alongside New Mexico's soft launch in December 2026. Early pilot clinics shape what gets built between now and then.</p>
       </div>
     </div>
   </div>
