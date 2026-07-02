@@ -1,0 +1,451 @@
+<style>
+  :root {
+    --paper: #F1F4EF;
+    --panel: #FFFFFF;
+    --band:  #E7ECE3;
+    --ink:   #17231D;
+    --muted: #55645B;
+    --line:  #D3DBD0;
+    --pine:  #1E4B3C;
+    --pine-2:#2E6A54;
+    --accent:#C8482B;
+    --accent-bright:#E06844;
+
+    --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    --measure: 64ch;
+    --wrap: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
+
+  /* ---- typography ---- */
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--pine-2); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pine-2);
+    margin: 0 0 18px;
+  }
+  .lede { font-size: clamp(18px, 2.4vw, 21px); color: #26362E; max-width: var(--measure); }
+  .fine { color: var(--muted); font-size: 14.5px; }
+
+  /* ---- section rhythm ---- */
+  .section { padding-block: clamp(56px, 8vw, 104px); border-top: 1px solid var(--line); }
+  .section--band { background: var(--band); }
+  .section--hero { border-top: none; padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 96px); }
+  .section-head { max-width: var(--measure); margin-bottom: 44px; }
+  .section-head h2 { font-size: clamp(28px, 4vw, 40px); }
+  .section-head p { margin-top: 16px; color: var(--muted); }
+
+  /* ---- top bar ---- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-name { font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .mark { display: block; flex: none; }
+  .status-pill {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--pine); background: rgba(30,75,60,0.08);
+    border: 1px solid rgba(30,75,60,0.18); border-radius: 999px; padding: 6px 12px; white-space: nowrap;
+  }
+
+  /* ---- hero ---- */
+  .hero h1 { font-size: clamp(38px, 6.4vw, 68px); max-width: 15ch; }
+  .hero .lede { margin-top: 26px; }
+  .hero-meta { margin-top: 14px; font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; margin-top: 40px; }
+  .btn {
+    font-family: var(--sans); font-size: 16px; font-weight: 600; line-height: 1;
+    color: #fff; background: var(--accent); border: 1px solid var(--accent);
+    padding: 15px 24px; border-radius: 4px; cursor: pointer; text-decoration: none;
+    transition: background .18s ease, transform .18s ease;
+  }
+  .btn:hover { background: #b23f24; }
+  .link-strong { font-weight: 600; color: var(--pine); }
+
+  /* ---- problem: gap comparison ---- */
+  .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .split p + p { margin-top: 18px; }
+  .compare { display: grid; gap: 14px; }
+  .compare-card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; }
+  .compare-card h3 { font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .compare-card.on { border-color: rgba(30,75,60,0.4); box-shadow: inset 3px 0 0 var(--pine); }
+  .compare-card.on h3 { color: var(--pine); }
+  .compare-card p { font-size: 15.5px; color: #2a3a32; }
+  .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---- phases journey ---- */
+  .phases { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 8px; }
+  .phase { position: relative; padding: 40px 18px 0; }
+  .phase::before {
+    content: ""; position: absolute; top: 13px; left: 0; right: 0; height: 2px; background: var(--line);
+  }
+  .phase:first-child::before { left: 50%; }
+  .phase:last-child::before { right: 50%; }
+  .phase-node {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 16px; height: 16px; border-radius: 50%; background: var(--paper);
+    border: 2px solid var(--pine); z-index: 2;
+  }
+  .section--band .phase-node { background: var(--band); }
+  .phase.key .phase-node { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(200,72,43,0.14); }
+  .phase-num { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--pine-2); font-variant-numeric: tabular-nums; }
+  .phase h3 { font-family: var(--sans); font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .phase p { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .phase.key h3 { color: var(--accent); }
+  .phase-flag { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(200,72,43,0.35); border-radius: 999px; padding: 3px 9px; }
+
+  /* ---- pipeline ---- */
+  .stations { display: grid; gap: 12px; counter-reset: st; }
+  .station {
+    display: grid; grid-template-columns: 44px 1fr auto; align-items: start; gap: 20px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 22px 24px;
+  }
+  .station.built { border-color: rgba(30,75,60,0.35); }
+  .station-idx { font-family: var(--mono); font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .station-body h3 { font-family: var(--sans); font-size: 18px; font-weight: 700; }
+  .station-body p { margin-top: 6px; font-size: 15px; color: #33433b; max-width: 62ch; }
+  .pill { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; white-space: nowrap; align-self: center; }
+  .pill.done { color: #fff; background: var(--pine); }
+  .pill.next { color: var(--muted); background: transparent; border: 1px solid var(--line); }
+
+  /* ---- principles ---- */
+  .principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .principle { background: var(--paper); padding: 30px clamp(22px, 3vw, 34px); }
+  .section--band .principle { background: var(--band); }
+  .principle h3 { font-family: var(--sans); font-size: 17px; font-weight: 700; }
+  .principle .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 12px; }
+  .principle p { margin-top: 10px; font-size: 15px; color: #33433b; }
+
+  /* ---- timeline ---- */
+  .timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .tl { border-top: 2px solid var(--line); padding-top: 14px; }
+  .tl.done { border-top-color: var(--pine); }
+  .tl.now { border-top-color: var(--accent); }
+  .tl .mo { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tl .now-tag { color: var(--accent); }
+  .tl h3 { font-family: var(--sans); font-size: 14.5px; font-weight: 700; margin-top: 8px; }
+  .tl p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  /* ---- footer ---- */
+  .foot { background: var(--pine); color: #E7EFE9; border-top: none; }
+  .foot h2 { color: #fff; font-size: clamp(26px, 4vw, 38px); max-width: 20ch; }
+  .foot .lede { color: #C6D6CD; }
+  .foot a.link-strong { color: #fff; }
+  .foot .btn { background: var(--accent); border-color: var(--accent); }
+  .foot .btn:hover { background: #b23f24; }
+  .foot-note { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.16); display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: baseline; }
+  .foot-note p { color: #A9BFB4; font-size: 13px; max-width: 60ch; }
+  .foot-note .brand-name { color: #fff; font-size: 18px; }
+
+  .disclaimer { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; color: #8FA79A; text-transform: uppercase; }
+
+  /* ---- motion ---- */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  a:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; border-radius: 4px; }
+
+  @media (max-width: 860px) {
+    .split { grid-template-columns: 1fr; }
+    .phases { grid-template-columns: 1fr 1fr; }
+    .phase::before, .phase-node { display: none; }
+    .phase { padding: 0; }
+    .timeline { grid-template-columns: 1fr 1fr; }
+    .principles { grid-template-columns: 1fr; }
+    .station { grid-template-columns: 32px 1fr; }
+    .station .pill { grid-column: 2; justify-self: start; margin-top: 6px; }
+  }
+  @media (max-width: 520px) {
+    .phases { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .btn { transition: none; }
+  }
+</style>
+
+<header class="wrap topbar">
+  <div class="brand">
+    <svg class="mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+      <circle cx="15" cy="15" r="13" fill="none" stroke="#1E4B3C" stroke-width="1.4" opacity="0.35"/>
+      <circle cx="15" cy="15" r="8.5" fill="none" stroke="#1E4B3C" stroke-width="1.6" opacity="0.6"/>
+      <circle cx="15" cy="15" r="4" fill="#C8482B"/>
+    </svg>
+    <span class="brand-name">Bill&nbsp;Pop</span>
+  </div>
+  <span class="status-pill">Month 2 of 6 · In build</span>
+</header>
+
+<section class="section section--hero">
+  <div class="wrap hero reveal">
+    <p class="eyebrow">Insurance billing, automated</p>
+    <h1>The insurance engine behind psychedelic-assisted therapy.</h1>
+    <p class="lede">Bill Pop turns the notes a clinic already writes about each patient visit into paid insurance claims — the specialized billing work these clinics otherwise do by hand, or skip entirely.</p>
+    <p class="hero-meta">For clinics running Homecoming or Althea · New Mexico, 2026</p>
+    <div class="cta-row">
+      <a class="btn" href="#pilot">Request a pilot</a>
+      <a class="link-strong" href="#how">See how it works ↓</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--band">
+  <div class="wrap">
+    <div class="split reveal">
+      <div>
+        <p class="eyebrow">The problem</p>
+        <h2 style="font-size:clamp(26px,3.6vw,36px);">Great clinical tools. No way to bill insurance.</h2>
+        <p class="lede" style="margin-top:20px;">Clinics offering psilocybin-assisted therapy run on Homecoming or Althea. Both are strong at scheduling, intake, and cash payments — but neither can bill <em>insurance</em>, which is its own specialized, paperwork-heavy world.</p>
+        <p style="margin-top:18px; color:var(--muted); max-width:var(--measure);">So today that revenue is left on the table or chased by hand. Bill Pop is the missing piece: the engine that sits behind the clinic's existing system and does the insurance work for them.</p>
+      </div>
+      <div class="compare" aria-label="What each system handles">
+        <div class="compare-card">
+          <h3>Homecoming / Althea</h3>
+          <p><span class="tag" style="color:var(--pine-2)">Handled</span> — scheduling, intake &amp; screening forms, clinical notes, cash-pay payments.</p>
+        </div>
+        <div class="compare-card on">
+          <h3>Bill Pop</h3>
+          <p><span class="tag" style="color:var(--accent)">The gap we fill</span> — coding the visit, checking coverage, submitting claims, chasing denials, reconciling payments.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The shape of care</p>
+      <h2>Care happens in five phases. Insurance pays for each differently.</h2>
+      <p>A course of treatment isn't one appointment — it's a journey, and each stage carries its own billing code and its own proof requirements.</p>
+    </div>
+    <div class="phases reveal">
+      <div class="phase">
+        <span class="phase-node"></span>
+        <span class="phase-num">01</span>
+        <h3>Screening</h3>
+        <p>Is this patient a safe, suitable candidate?</p>
+      </div>
+      <div class="phase">
+        <span class="phase-node"></span>
+        <span class="phase-num">02</span>
+        <h3>Preparation</h3>
+        <p>Getting the patient ready for the dosing session.</p>
+      </div>
+      <div class="phase">
+        <span class="phase-node"></span>
+        <span class="phase-num">03A</span>
+        <h3>Administration</h3>
+        <p>The dosing session itself.</p>
+      </div>
+      <div class="phase key">
+        <span class="phase-node"></span>
+        <span class="phase-num">03B</span>
+        <h3>Monitoring</h3>
+        <p>Supervising the patient as the medicine wears off.</p>
+        <span class="phase-flag">Most often under-documented</span>
+      </div>
+      <div class="phase">
+        <span class="phase-node"></span>
+        <span class="phase-num">04</span>
+        <h3>Integration</h3>
+        <p>Follow-up to make sense of the experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">From visit to paid claim</p>
+      <h2>One assembly line, seven stations.</h2>
+      <p>A patient visit goes in one end; a paid claim comes out the other. Two stations are built and tested today — the rest arrive month by month toward a December go-live.</p>
+    </div>
+    <div class="stations reveal">
+      <div class="station built">
+        <span class="station-idx">01</span>
+        <div class="station-body">
+          <h3>Intake</h3>
+          <p>Records come in by manual entry (built first — the pilot needs it to go live regardless) or CSV upload. The original is kept untouched, then translated into one standard format. Anything incomplete — a Monitoring visit missing vitals — is <strong>flagged for a human, never billed wrong</strong>.</p>
+        </div>
+        <span class="pill done">Built</span>
+      </div>
+      <div class="station built">
+        <span class="station-idx">02</span>
+        <div class="station-body">
+          <h3>Eligibility check</h3>
+          <p>Before building a claim, Bill Pop asks the insurer “is this person covered, and for what?” — the standardized <span class="tag" style="color:var(--pine-2)">270/271</span> exchange — and records the coverage. Built to plug into any clearinghouse once one is chosen.</p>
+        </div>
+        <span class="pill done">Built</span>
+      </div>
+      <div class="station">
+        <span class="station-idx">03</span>
+        <div class="station-body">
+          <h3>Coding &amp; charge capture</h3>
+          <p>Pick the exact billing codes for each phase of care, with the Phase 3B monitoring logic that keeps documentation honest.</p>
+        </div>
+        <span class="pill next">Roadmap</span>
+      </div>
+      <div class="station">
+        <span class="station-idx">04</span>
+        <div class="station-body">
+          <h3>Prior authorization</h3>
+          <p>Assemble and track the insurer's advance approval where a payer requires it.</p>
+        </div>
+        <span class="pill next">Roadmap</span>
+      </div>
+      <div class="station">
+        <span class="station-idx">05</span>
+        <div class="station-body">
+          <h3>Claims submission</h3>
+          <p>Scrub the claim for errors, then send the bill — the <span class="tag" style="color:var(--pine-2)">837</span> — through the clearinghouse.</p>
+        </div>
+        <span class="pill next">Roadmap</span>
+      </div>
+      <div class="station">
+        <span class="station-idx">06</span>
+        <div class="station-body">
+          <h3>Remittance &amp; appeals</h3>
+          <p>Read the insurer's payment or denial — the <span class="tag" style="color:var(--pine-2)">835</span> — and auto-draft the appeal when something's denied.</p>
+        </div>
+        <span class="pill next">Roadmap</span>
+      </div>
+      <div class="station">
+        <span class="station-idx">07</span>
+        <div class="station-body">
+          <h3>Posting &amp; reporting</h3>
+          <p>Record what was paid, flag underpayments against contracted rates, and give the clinic clear revenue reports.</p>
+        </div>
+        <span class="pill next">Roadmap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why it's built this way</p>
+      <h2>Decisions that protect the clinic.</h2>
+    </div>
+    <div class="principles reveal">
+      <div class="principle">
+        <span class="k">Rules as data</span>
+        <h3>Built for rules that keep changing.</h3>
+        <p>New Mexico's Medicaid board is still finalizing the codes and will keep revising them through 2027. Bill Pop treats those rules like editable settings, not logic buried in software — so an update is a data change, not a rebuild.</p>
+      </div>
+      <div class="principle">
+        <span class="k">Swappable parts</span>
+        <h3>Nothing undecided is hard-wired.</h3>
+        <p>The clinic's source system and the clearinghouse are plug-ins. When a vendor opens direct access, or a clearinghouse is chosen, only that one connector changes — the billing logic behind it stays put.</p>
+      </div>
+      <div class="principle">
+        <span class="k">Flag, don't guess</span>
+        <h3>Raise a hand before mis-billing.</h3>
+        <p>A record missing what it needs to bill is flagged for review, never quietly coded wrong. Under-billing loses money; mis-billing invites compliance trouble. The instinct is always to ask.</p>
+      </div>
+      <div class="principle">
+        <span class="k">Privacy first</span>
+        <h3>Audit trail on every touch.</h3>
+        <p>Patient data is sensitive health information. Everything is logged, nothing sensitive sits in the open, and a clinic isn't switched on until the privacy agreement is signed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The build sequence</p>
+      <h2>Six months to go-live.</h2>
+      <p>Shipping alongside New Mexico's soft launch, then tightening against real payer responses.</p>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl done">
+        <span class="mo">Jul</span>
+        <h3>Data model</h3>
+        <p>Schema &amp; phase-based config.</p>
+      </div>
+      <div class="tl now">
+        <span class="mo now-tag">Aug · now</span>
+        <h3>Intake + eligibility</h3>
+        <p>Records in; coverage checks.</p>
+      </div>
+      <div class="tl">
+        <span class="mo">Sep</span>
+        <h3>Coding + prior auth</h3>
+        <p>Charge capture, PA packets.</p>
+      </div>
+      <div class="tl">
+        <span class="mo">Oct</span>
+        <h3>Claims + denials</h3>
+        <p>837 submission, appeals.</p>
+      </div>
+      <div class="tl">
+        <span class="mo">Nov</span>
+        <h3>Posting + dry run</h3>
+        <p>Reconciliation on real data.</p>
+      </div>
+      <div class="tl">
+        <span class="mo">Dec</span>
+        <h3>Go live</h3>
+        <p>First real claims, close watch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section foot" id="pilot">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--accent-bright);">Get involved</p>
+      <h2>Billing shouldn't be the reason this care stays out of reach.</h2>
+      <p class="lede" style="margin-top:22px;">If you run a PAT clinic, work at a clearinghouse, or are exploring the New Mexico rollout, we'd like to talk — pilot clinics shape what gets built next.</p>
+      <div class="cta-row">
+        <a class="btn" href="mailto:hello@billpop.example?subject=Bill%20Pop%20pilot">Request a pilot</a>
+        <a class="link-strong" href="mailto:hello@billpop.example">hello@billpop.example</a>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span class="brand-name">Bill Pop</span>
+      <p class="disclaimer">Provisional — billing codes and rates shown in the product are placeholders pending the NM Medicaid Advisory Board's final list. Not for live billing as-is.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var items = document.querySelectorAll(".reveal");
+    if (reduce || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
