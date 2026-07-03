@@ -8,7 +8,7 @@ roadmap.
 from fastapi import FastAPI
 
 from app.config import settings
-from app.routers import billing, eligibility, intake
+from app.routers import billing, claims, eligibility, intake
 
 app = FastAPI(
     title="Bill Pop",
@@ -19,6 +19,7 @@ app = FastAPI(
 app.include_router(intake.router)
 app.include_router(eligibility.router)
 app.include_router(billing.router)
+app.include_router(claims.router)
 
 
 @app.get("/health", tags=["ops"])

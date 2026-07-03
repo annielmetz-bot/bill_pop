@@ -82,3 +82,15 @@ class ChargeStatus(enum.StrEnum):
 
     CODED = "coded"                  # priced against an active payer rule
     NEEDS_REVIEW = "needs_review"    # no active rule / can't price — flag, don't guess
+
+
+class ClaimStatus(enum.StrEnum):
+    """Lifecycle of a claim from assembly through payment."""
+
+    DRAFT = "draft"          # assembled, not yet passing scrub
+    SCRUBBED = "scrubbed"    # passed validation, ready to submit
+    SUBMITTED = "submitted"  # sent to the clearinghouse
+    ACCEPTED = "accepted"    # clearinghouse accepted the 837
+    REJECTED = "rejected"    # clearinghouse rejected the 837
+    PAID = "paid"            # remittance posted (Milestone C3)
+    DENIED = "denied"        # remittance denied (Milestone C3)

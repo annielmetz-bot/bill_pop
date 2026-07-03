@@ -8,9 +8,10 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://billpop:billpop@localhost:5432/billpop"
     app_env: str = "development"
-    # Which eligibility clearinghouse gateway to use. Only "sandbox" exists until
-    # a vendor is selected (spec open-question Q2).
+    # Which clearinghouse gateways to use. Only "sandbox" exists until a vendor
+    # is selected (spec open-question Q2).
     eligibility_gateway: str = "sandbox"
+    claims_gateway: str = "sandbox"
 
 
 settings = Settings()
