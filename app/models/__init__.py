@@ -5,6 +5,7 @@ autogenerate and ``create_all`` see the full schema.
 """
 
 from app.models.base import Base
+from app.models.billing import Charge
 from app.models.clinical import (
     Client,
     Clinic,
@@ -41,4 +42,6 @@ __all__ = [
     "IntakeRawRecord",
     # eligibility
     "EligibilityCheck",
+    # billing
+    "Charge",
 ]

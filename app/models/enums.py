@@ -75,3 +75,10 @@ class EligibilityStatus(enum.StrEnum):
     NEEDS_INFO = "needs_info"  # payer needs more info to respond
     NOT_FOUND = "not_found"    # subscriber/patient not found (271 AAA)
     ERROR = "error"            # transport / gateway error
+
+
+class ChargeStatus(enum.StrEnum):
+    """Coding-readiness of a billable charge line."""
+
+    CODED = "coded"                  # priced against an active payer rule
+    NEEDS_REVIEW = "needs_review"    # no active rule / can't price — flag, don't guess

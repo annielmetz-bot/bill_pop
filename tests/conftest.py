@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import date
+from decimal import Decimal
 
 import pytest
 from sqlalchemy import create_engine, text
@@ -99,6 +100,7 @@ def seeded_clinic(db_session: Session):
         payer_id=payer.id,
         billing_code_id=monitor_code.id,
         effective_date=date(2026, 1, 1),
+        rate=Decimal("300.00"),
     )
     db_session.add(rule)
     db_session.flush()
