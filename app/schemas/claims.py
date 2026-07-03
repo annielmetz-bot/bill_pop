@@ -8,7 +8,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
-from app.models.enums import ClaimStatus
+from app.models.enums import ClaimStatus, RemittanceStatus
 
 
 class ClaimCreate(BaseModel):
@@ -33,3 +33,16 @@ class ScrubResult(BaseModel):
     claim_id: uuid.UUID
     status: ClaimStatus
     errors: list[str]
+
+
+class RemittanceOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    claim_id: uuid.UUID
+    status: RemittanceStatus
+    charged_amount: Decimal
+    paid_amount: Decimal
+    underpaid_amount: Decimal
+    adjustments: list[dict[str, str]]
+    denial_codes: list[str]

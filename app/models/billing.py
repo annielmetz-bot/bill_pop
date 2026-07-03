@@ -9,13 +9,13 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import DateTime, ForeignKey, Numeric, String
+from sqlalchemy import DateTime, ForeignKey, Numeric, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models._types import str_enum
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
-from app.models.enums import ChargeStatus, ClaimStatus
+from app.models.enums import ChargeStatus, ClaimStatus, RemittanceStatus
 
 
 class Charge(UUIDPrimaryKeyMixin, TimestampMixin, Base):
@@ -79,3 +79,39 @@ class Claim(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     raw_837: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
 
     charges: Mapped[list["Charge"]] = relationship(back_populates="claim")
+    remittance: Mapped["Remittance | None"] = relationship(
+        back_populates="claim", uselist=False
+    )
+
+
+class Remittance(UUIDPrimaryKeyMixin, TimestampMixin, Base):
+    """Posted 835 remittance for a claim: what the payer actually paid."""
+
+    __tablename__ = "remittance"
+
+    claim_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("claim.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+    payer_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("payer.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    status: Mapped[RemittanceStatus] = mapped_column(
+        str_enum(RemittanceStatus), nullable=False, index=True
+    )
+    charged_amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    paid_amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    # Paid short of the contracted rate (0 when paid in full). Flagged for follow-up.
+    underpaid_amount: Mapped[Decimal] = mapped_column(
+        Numeric(10, 2), nullable=False, default=Decimal("0")
+    )
+    adjustments: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    denial_codes: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    posted_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    raw_835: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+
+    claim: Mapped["Claim"] = relationship(back_populates="remittance")

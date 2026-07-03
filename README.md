@@ -4,13 +4,15 @@ Billing automation agent for **psychedelic-assisted therapy (PAT) clinics**.
 It's the insurance coding/claims engine downstream of the clinic's system of
 record (Homecoming or Althea) — not a clinical or scheduling app.
 
-> **Status: August 2026 — Month 2 of 6 (intake layer + eligibility).**
-> Built so far: the schema + migrations + provisional seed data (Month 1); the
-> **Data Intake Layer v1** (manual entry + CSV, normalization into billable
-> records with incomplete-record flagging); and the **Eligibility & Benefits**
-> layer (270/271 against a vendor-agnostic clearinghouse **sandbox**). Coding,
-> claims, remittance, posting, and reporting layers arrive in later months per
-> the roadmap in `BILL_POP_SPEC.md`.
+> **Status: claims-first build.**
+> Built so far: the schema + migrations + provisional seed data; the **Data
+> Intake Layer v1** (manual entry + CSV, normalization into billable records
+> with incomplete-record flagging); and the full **billing spine** — coding &
+> charge capture → claim assembly, scrub & **837** submission → **835**
+> remittance & payment posting (with underpayment flagging), all against a
+> vendor-agnostic clearinghouse **sandbox**. **Eligibility & Benefits (270/271)**
+> is also built but **deferred as a feature** — its gateway/EDI scaffolding is
+> reused by the claims layer. Reporting arrives next per `BILL_POP_SPEC.md`.
 
 ## Architecture (target)
 
@@ -68,6 +70,27 @@ a real Availity/Waystar/Change adapter drops in behind the same interface
 
 Endpoints: `POST /eligibility/checks`, `GET /eligibility/checks/{id}`,
 `GET /clients/{id}/eligibility`.
+
+## Billing spine (claims-first)
+
+The end-to-end billing pipeline: **code → assemble → scrub → submit → post**.
+
+- **Coding & charge capture** (`app/services/coding.py`) — turns each
+  `READY_TO_CODE` PhaseRecord into a priced `Charge`, resolving the billing code
+  and the effective-dated `PayerCodeRule` for the client's payer. No active rule
+  → `needs_review`, never silently zero-priced.
+- **Claim assembly, scrub & 837** (`app/services/claims_service.py`,
+  `claim_scrub.py`) — groups coded charges into a `Claim`, validates it
+  (required fields, duplicate lines), builds an **illustrative** X12 837P
+  (`app/claims/x12_837.py`), and submits it through a swappable
+  `ClaimsGateway` (sandbox today).
+- **Remittance & posting** (`app/services/posting.py`, `app/claims/x12_835.py`)
+  — reads the payer's **835**, records what was paid, classifies denials, and
+  **flags underpayments vs. the contracted rate**.
+
+Endpoints: `POST /episodes/{id}/code`, `GET /episodes/{id}/charges`,
+`POST /claims`, `POST /claims/{id}/scrub`, `POST /claims/{id}/submit`,
+`POST /claims/{id}/remittance`, `GET /claims/{id}`.
 
 ## Tech
 

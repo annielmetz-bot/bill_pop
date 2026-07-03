@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     # is selected (spec open-question Q2).
     eligibility_gateway: str = "sandbox"
     claims_gateway: str = "sandbox"
+    remittance_gateway: str = "sandbox"
 
 
 settings = Settings()

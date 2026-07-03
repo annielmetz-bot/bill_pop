@@ -94,3 +94,10 @@ class ClaimStatus(enum.StrEnum):
     REJECTED = "rejected"    # clearinghouse rejected the 837
     PAID = "paid"            # remittance posted (Milestone C3)
     DENIED = "denied"        # remittance denied (Milestone C3)
+
+
+class RemittanceStatus(enum.StrEnum):
+    """Outcome of posting an 835 remittance against a claim."""
+
+    PAID = "paid"        # payer paid (possibly less than billed — see underpaid_amount)
+    DENIED = "denied"    # payer denied the claim (zero paid)
